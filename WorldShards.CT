@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"加速"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>UnityPlayer.dll+1CA3978</Address>
+      <Offsets>
+        <Offset>FC</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>7</ID>
+      <Description>"秒杀"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048,"GameAssembly.dll"+350DF8D)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+alloc(enemyptr,8)
+alloc(lastptr,8)
+registerSymbol(enemyptr)
+
+newmem: //this is allocated memory, you have read,write,execute access
+  mov rax,"GameAssembly.dll"+73E791
+  cmp [rsp+38],rax
+  jne originalcode
+  xor eax,eax
+  mov [rbx+28],eax
+  mov [enemyptr], rbx
+//"GameAssembly.dll"+73E791
+//怪物血量查找访问-&gt;(S)堆栈-&gt;(右键)RSP表达-&gt;RSP+38
+jmp exit
+originalcode:
+  movss [rbx+28],xmm6
+
+exit:
+  jmp returnhere
+
+"GameAssembly.dll"+350DF8D:
+  jmp newmem
+returnhere:
+
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+dealloc(newmem)
+"GameAssembly.dll"+350DF8D:
+db F3 0F 11 73 28
+//movss [rbx+28],xmm6
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
